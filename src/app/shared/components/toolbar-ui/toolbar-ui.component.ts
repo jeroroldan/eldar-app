@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { SplitButtonModule } from 'primeng/splitbutton';
@@ -24,9 +24,8 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
     CapitalizePipe,
   ],
   template: `
-    @if(user$ | async; as user){
     <p-toolbar>
-      <p class="text-user">Bienvenido: {{ user.name | capitalize }}</p>
+      <p class="text-user">Bienvenido: {{ name | capitalize }}</p>
       <div class="p-toolbar-group-center toolbar-center">
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
@@ -47,7 +46,6 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
         ></p-button>
       </div>
     </p-toolbar>
-    }
   `,
   styles: [
     `
@@ -69,13 +67,13 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
   ],
 })
 export class ToolbarUiComponent implements OnInit {
+  @Input() name: string = '';
   @Output() onSearchValueControl: EventEmitter<string | null> =
     new EventEmitter<string | null>();
   @Output() onLogout: EventEmitter<null> = new EventEmitter<null>();
   protected searchField = new FormControl('');
-  protected user$ = this.store.user$;
 
-  constructor(private readonly store: GlobalStore) {}
+  constructor() {}
 
   ngOnInit() {
     this.getValueField();

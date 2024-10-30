@@ -51,6 +51,7 @@ export class GlobalStore extends ComponentStore<GlobalState> {
           this.authService.login({ email, password }).pipe(
             tap((response) => {
               localStorage.setItem('token', response.token);
+              this.patchState({ user: response.user })
               this.setAuthStatus(AuthStatus.authenticated);
               this.router.navigate(['/pages']);
             }),

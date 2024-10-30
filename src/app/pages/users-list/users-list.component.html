@@ -1,4 +1,6 @@
-<toolbar-ui (onLogout)="logout()" (onSearchValueControl)="handleSearchValue($event)" />
+@if(user$ | async ; as user){
+  <toolbar-ui (onLogout)="logout()" [name]="user.name" (onSearchValueControl)="handleSearchValue($event)" />
+}
 
 @if(vm$ | async ; as vm){
 @if(!vm.showSkeleton){

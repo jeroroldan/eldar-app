@@ -37,6 +37,7 @@ export class UsersListComponent  {
   public isvisible: boolean = false;
   public user: Data | null = null;
   protected vm$ = this.userListsStore.vm$;
+  protected user$ = this.store.user$;
   constructor(
     private readonly userListsStore: UserListsStore,
     private readonly store: GlobalStore
