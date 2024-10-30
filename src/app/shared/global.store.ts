@@ -95,7 +95,6 @@ export class GlobalStore extends ComponentStore<GlobalState> {
   readonly logout = this.effect<void>(($) =>
     $.pipe(
       tap(() => {
-        console.log('entre');
         this.patchState({
           ...initialState,
           authStatus: AuthStatus.notAuthenticated,

@@ -17,9 +17,10 @@ import { Data } from '../../../pages/models/user.interface';
       <ng-template pTemplate="header">
         <img alt="Card" [src]="user?.avatar" />
       </ng-template>
+
       <div class="user-info">
         <span>{{ user?.first_name }} {{ user?.last_name }}</span>
-        <div class="icon-item" (onClick)="handleClickEvent(user ?? null)" >
+        <div class="icon-item" (click)="handleClickEvent(user ?? null)">
           <button class="button-pencil" type="button">
             <span
               class="pi pi-pencil"
@@ -28,12 +29,14 @@ import { Data } from '../../../pages/models/user.interface';
           </button>
         </div>
       </div>
+
       <p>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptates
         deleniti dolorem quam, odio delectus suscipit. Assumenda cupiditate, aut
         incidunt, ex corporis dicta, harum consequuntur facere aspernatur quidem
         accusamus eligendi nesciunt!
       </p>
+
       <ng-template pTemplate="footer">
         <div class="flex gap-3 mt-1">
           <p-button
@@ -56,9 +59,10 @@ import { Data } from '../../../pages/models/user.interface';
 })
 export class CardUserComponent {
   @Input() user: Data | null = null;
-  @Output() onClickEvent: EventEmitter<Data | null> = new EventEmitter<Data | null>();
+  @Output() onClickEvent: EventEmitter<Data | null> =
+    new EventEmitter<Data | null>();
 
-  handleClickEvent(user: Data | null){
-      this.onClickEvent.emit(user)
+  handleClickEvent(user: Data | null) {
+    this.onClickEvent.emit(user);
   }
 }

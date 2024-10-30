@@ -10,15 +10,11 @@ export const AuthGuard: CanActivateFn = (): Observable<boolean> => {
 
   return globalStore.authStatus$.pipe(
     tap((authStatus) => {
-      // Loguea el estado de autenticación
-      console.log('Auth status:', authStatus);
 
-      // Si no está autenticado, redirigir
       if (authStatus !== AuthStatus.authenticated) {
-        console.log('User not authenticated. Redirecting to /auth/login.');
         router.navigate(['/auth/login']);
       }
     }),
-    map((authStatus) => authStatus === AuthStatus.authenticated) // Devuelve true o false
+    map((authStatus) => authStatus === AuthStatus.authenticated)
   );
 };

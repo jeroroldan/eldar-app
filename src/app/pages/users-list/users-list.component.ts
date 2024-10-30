@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { UserListsStore } from './users-list.store';
 import { AsyncPipe, NgFor } from '@angular/common';
 import { CardModule } from 'primeng/card';
@@ -33,7 +33,7 @@ import { Data } from '../models/user.interface';
   styleUrl: './users-list.component.scss',
   providers: [UserListsStore],
 })
-export class UsersListComponent {
+export class UsersListComponent  {
   public isvisible: boolean = false;
   public user: Data | null = null;
   protected vm$ = this.userListsStore.vm$;
@@ -44,13 +44,15 @@ export class UsersListComponent {
     this.userListsStore.loadData();
   }
 
+
+
   handleSearchValue(term: string | null) {
     this.userListsStore.loadFilteredUsers(term);
   }
 
   handleDataClick(user: Data | null) {
-    this.isvisible = true;
     this.user = user;
+    this.isvisible = true;
   }
 
   logout() {

@@ -14,7 +14,7 @@ import { Data } from '../../../pages/models/user.interface';
     <p-dialog
       header="Edit Profile"
       [modal]="true"
-      [(visible)]="isVisible"
+      [(visible)]="isShowModal"
       [style]="{ width: '25rem' }"
     >
       <span class="p-text-secondary block mb-5">{{ user.avatar }}</span>
@@ -34,13 +34,16 @@ import { Data } from '../../../pages/models/user.interface';
           severity="secondary"
           (onClick)="isVisible = false"
         />
-        <p-button label="Save" (onClick)="isVisible = false" />
+        <p-button label="Save" (click)="isShowModal = false" />
       </div>
     </p-dialog>
     }
   `,
 })
-export class UserDialogComponent {
+export class UserDialogComponent  {
+  public isShowModal: boolean = false;
   @Input() user: Data | null = null;
-  @Input() isVisible: boolean = false;
+  @Input() set isVisible(value: boolean) {
+    this.isShowModal = value;
+  }
 }

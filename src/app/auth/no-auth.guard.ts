@@ -10,10 +10,8 @@ export const NoAuthGuard: CanActivateFn = (): Observable<boolean> => {
 
   return globalStore.authStatus$.pipe(
     tap((authStatus) => {
-      console.log('Auth status:', authStatus);
 
       if (authStatus === AuthStatus.authenticated) {
-        console.log('User is authenticated. Redirecting to /pages.');
         router.navigate(['/pages']);
       }
     }),
