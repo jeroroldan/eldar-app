@@ -13,6 +13,7 @@ export enum AuthStatus {
 export interface GlobalState {
   user: User | null;
   token: string | null;
+  isLoading: boolean;
   roles: string[];
   authStatus: AuthStatus;
   error: string | null;
@@ -22,6 +23,7 @@ const initialState: GlobalState = {
   user: null,
   token: null,
   roles: [],
+  isLoading: false,
   authStatus: AuthStatus.notAuthenticated,
   error: null,
 };
@@ -36,6 +38,7 @@ export class GlobalStore extends ComponentStore<GlobalState> {
 
   readonly authStatus$ = this.select((state) => state.authStatus);
   readonly user$ = this.select((state) => state.user);
+  readonly isLoading$ = this.select((state) => state.isLoading);
 
 
   readonly setAuthStatus = this.updater((state, authStatus: AuthStatus) => ({
@@ -46,16 +49,17 @@ export class GlobalStore extends ComponentStore<GlobalState> {
   readonly login = this.effect<{ email: string; password: string }>(
     (credentials$) =>
       credentials$.pipe(
-        tap(() => this.patchState({ authStatus: AuthStatus.checking })),
+        tap(() => this.patchState({ authStatus: AuthStatus.checking, isLoading: true })),
         switchMap(({ email, password }) =>
           this.authService.login({ email, password }).pipe(
             tap((response) => {
               localStorage.setItem('token', response.token);
-              this.patchState({ user: response.user })
+              this.patchState({ user: response.user, isLoading: false })
               this.setAuthStatus(AuthStatus.authenticated);
               this.router.navigate(['/pages']);
             }),
             catchError((error) => {
+              this.patchState({ isLoading: false });
               this.setAuthStatus(AuthStatus.notAuthenticated);
               return of(error);
             })
@@ -74,12 +78,14 @@ export class GlobalStore extends ComponentStore<GlobalState> {
 
     return this.authService.checkAuthStatus().pipe(
       tap((response) => {
+        this.patchState({ isLoading: true });
         if (response?.user) {
           this.patchState({
             user: response.user,
             token: response.token,
             roles: response.user.roles,
             authStatus: AuthStatus.authenticated,
+            isLoading: false
           });
           this.router.navigate(['/pages']);
         } else {
