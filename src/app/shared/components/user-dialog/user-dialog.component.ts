@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardUserComponent } from '../card-user/card-user.component';
@@ -12,38 +12,61 @@ import { Data } from '../../../pages/models/user.interface';
   template: `
     @if(user){
     <p-dialog
-      header="Edit Profile"
+      header="Edición de Usuario"
       [modal]="true"
       [(visible)]="isShowModal"
-      [style]="{ width: '25rem' }"
+      [style]="{ width: '25rem', textAlign: 'center' }"
+      [closable]="false"
     >
-      <span class="p-text-secondary block mb-5">{{ user.avatar }}</span>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="username" class="font-semibold w-6rem">{{
-          user.first_name
-        }}</label>
-        <input pInputText id="username" class="flex-auto" autocomplete="off" />
+      <div class="p-d-flex p-jc-center p-ai-center p-mb-3">
+        <img [src]="user.avatar" alt="Avatar" class="user-avatar" />
       </div>
-      <div class="flex align-items-center gap-3 mb-5">
-        <label for="email" class="font-semibold w-6rem">{{ user.email }}</label>
-        <input pInputText id="email" class="flex-auto" autocomplete="off" />
+      <div class="p-d-flex p-ai-center p-mb-3">
+        <label for="username" class="p-mr-2 font-semibold w-6rem"
+          ><span class="weight-text">Nombre: </span> {{ user.first_name }}</label
+        >
       </div>
-      <div class="flex justify-content-end gap-2">
+      <div class="p-d-flex p-ai-center p-mb-5">
+        <label for="email" class="p-mr-2 font-semibold w-6rem"
+          ><span class="weight-text">Email:</span> {{ user.email }}</label
+        >
+      </div>
+      <div class="p-d-flex mt-2 p-jc-end p-gap-2">
         <p-button
-          label="Cancel"
+          label="Cancelar"
           severity="secondary"
-          (onClick)="isVisible = false"
-        />
-        <p-button label="Save" (click)="isShowModal = false" />
+          (click)="handleCloseDialog()"
+        ></p-button>
       </div>
     </p-dialog>
     }
   `,
+  styles: [
+    `
+      .user-avatar {
+        padding: 1rem;
+        margin: auto;
+        width: 20rem;
+        height: 20rem;
+        border-radius: 50%;
+      }
+
+      .weight-text {
+        font-weight: 900;
+      }
+    `,
+  ],
 })
-export class UserDialogComponent  {
+export class UserDialogComponent {
   public isShowModal: boolean = false;
   @Input() user: Data | null = null;
   @Input() set isVisible(value: boolean) {
     this.isShowModal = value;
+  }
+  @Output() onCloseClickDialog = new EventEmitter<void>();
+
+  handleCloseDialog() {
+    this.onCloseClickDialog.emit();
+    this.isShowModal = false;
   }
 }

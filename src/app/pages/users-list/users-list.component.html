@@ -40,7 +40,7 @@
 }
 }}
 
-<app-user-dialog [isVisible]="isvisible" [user]="user" />
+<app-user-dialog [isVisible]="isvisible" (onCloseClickDialog)="handleToggleDialog()" [user]="user" />
 
 
 

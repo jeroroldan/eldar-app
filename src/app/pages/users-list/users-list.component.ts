@@ -33,7 +33,7 @@ import { Data } from '../models/user.interface';
   styleUrl: './users-list.component.scss',
   providers: [UserListsStore],
 })
-export class UsersListComponent  {
+export class UsersListComponent {
   public isvisible: boolean = false;
   public user: Data | null = null;
   protected vm$ = this.userListsStore.vm$;
@@ -45,8 +45,6 @@ export class UsersListComponent  {
     this.userListsStore.loadData();
   }
 
-
-
   handleSearchValue(term: string | null) {
     this.userListsStore.loadFilteredUsers(term);
   }
@@ -54,6 +52,10 @@ export class UsersListComponent  {
   handleDataClick(user: Data | null) {
     this.user = user;
     this.isvisible = true;
+  }
+
+  handleToggleDialog(){
+    this.isvisible = false;
   }
 
   logout() {
