@@ -1,0 +1,46 @@
+<toolbar-ui (onLogout)="logout()" (onSearchValueControl)="handleSearchValue($event)" />
+
+@if(vm$ | async ; as vm){
+@if(!vm.showSkeleton){
+<div class="container">
+  <div class="grid-container">
+    @for(user of vm.user; track user.id) {
+    <app-card-user (onClickEvent)="handleDataClick($event)" [user]="user" />
+    }@empty {
+      <p-card header="Sin resultados"  [style]="{backgroundColor: '#f34747',width: '100rem', textAlign: 'center', color: 'white', height:'10rem'}" />
+    }
+  </div>
+</div>
+}
+@else {
+@for(user of [1,2,3,4,5,6]; track user){
+  <div class="container">
+    <p-card>
+      <ng-template pTemplate="header">
+        <ngx-skeleton-loader count="6" appearance="line" />
+      </ng-template>
+      <div class="user-info">
+        <ngx-skeleton-loader count="1" appearance="line" />
+        <div class="icon-item">
+          <ngx-skeleton-loader count="1" appearance="line" />
+        </div>
+      </div>
+      <p>
+        <ngx-skeleton-loader count="5" appearance="line" />
+      </p>
+      <ng-template pTemplate="footer">
+        <div class="flex gap-3 mt-1">
+          <ngx-skeleton-loader count="1" appearance="line" />
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+}
+}}
+
+
+<!-- <p-button (onClick)="showDialog()" label="Show" /> -->
+<app-user-dialog [isVisible]="isvisible" [user]="user" />
+
+
+
