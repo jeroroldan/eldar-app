@@ -12,6 +12,15 @@ import { GlobalStore } from '../../shared/global.store';
 import { CardUserComponent } from "../../shared/components/card-user/card-user.component";
 import { UserDialogComponent } from "../../shared/components/user-dialog/user-dialog.component";
 import { Data } from '../models/user.interface';
+import { PaginatorModule } from 'primeng/paginator';
+
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
+
 
 @Component({
   selector: 'app-users-list',
@@ -28,6 +37,7 @@ import { Data } from '../models/user.interface';
     InputTextModule,
     CardUserComponent,
     UserDialogComponent,
+    PaginatorModule,
   ],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
@@ -36,13 +46,17 @@ import { Data } from '../models/user.interface';
 export class UsersListComponent {
   public isvisible: boolean = false;
   public user: Data | null = null;
+  public first: number = 0;
+  public rows: number = 2;
+  public totalRecords: number = 18;
+  public rowsPerPageOptions = [6, 6];
   protected vm$ = this.userListsStore.vm$;
   protected user$ = this.store.user$;
   constructor(
     private readonly userListsStore: UserListsStore,
     private readonly store: GlobalStore
   ) {
-    this.userListsStore.loadData();
+    this.userListsStore.loadData(1);
   }
 
   handleSearchValue(term: string | null) {
@@ -54,8 +68,14 @@ export class UsersListComponent {
     this.isvisible = true;
   }
 
-  handleToggleDialog(){
+  handleToggleDialog() {
     this.isvisible = false;
+  }
+
+  onPageChange(event: any) {
+    this.userListsStore.loadData(event.page + 1);
+    this.first = event.first;
+    this.rows = event.rows;
   }
 
   logout() {

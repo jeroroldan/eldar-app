@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { minLengthAsyncValidator } from '../../shared/validators/min-length.validators';
-import { GlobalStore } from '../../shared/global.store';
+import { AuthStatus, GlobalStore } from '../../shared/global.store';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 interface UserLogin {
@@ -32,14 +32,16 @@ interface UserLogin {
     PasswordModule,
     InputTextModule,
     ProgressSpinnerModule,
-    AsyncPipe
+    AsyncPipe,
+    NgIf,
   ],
   providers: [],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  protected authStatus$ = this.store.authStatus$;
+  notAuthenticated: AuthStatus = AuthStatus.notAuthenticated;
   public myForm!: FormGroup;
-  protected isLoading$ = this.store.isLoading$;
 
   constructor(
     private readonly fb: FormBuilder,

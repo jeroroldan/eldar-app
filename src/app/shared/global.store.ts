@@ -71,14 +71,16 @@ export class GlobalStore extends ComponentStore<GlobalState> {
   readonly checkAuthStatus = this.effect<void>(() => {
     const token = localStorage.getItem('token');
 
+    this.patchState({ isLoading: true });
     if (!token) {
+
       this.setAuthStatus(AuthStatus.notAuthenticated);
+      this.patchState({ isLoading:false })
       return of(undefined); // Salir de la función
     }
 
     return this.authService.checkAuthStatus().pipe(
       tap((response) => {
-        this.patchState({ isLoading: true });
         if (response?.user) {
           this.patchState({
             user: response.user,

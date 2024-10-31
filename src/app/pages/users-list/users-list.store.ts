@@ -26,22 +26,16 @@ export class UserListsStore extends ComponentStore<UserListsState> {
     super(initialState);
   }
 
+  readonly vm$ = this.select(({ showSkeleton, user }) => ({
+    showSkeleton,
+    user,
+  }));
 
-  readonly vm$ = this.select(
-    ({
-      showSkeleton,
-      user
-    }) => ({
-      showSkeleton,
-      user
-    })
-  );
-
-  readonly loadData = this.effect((users$) =>
-    users$.pipe(
+  readonly loadData = this.effect<number>((pageNumber$) =>
+    pageNumber$.pipe(
       tap(() => this.patchState({ showSkeleton: true })),
-      switchMap((id) =>
-        this.userListApi.getUsers().pipe(
+      switchMap((pageNumber) =>
+        this.userListApi.getUsers(pageNumber).pipe(
           tap((resp) =>
             this.patchState({
               userResponse: resp,

@@ -39,6 +39,16 @@
   </div>
 }
 }}
+@if(vm$ | async; as vm){
+@if(vm.user?.length){
+  <div class="card flex justify-content-center">
+  <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="6"
+    [totalRecords]="12"
+    [pageLinkSize]="3">
+  </p-paginator>
+  </div>
+}
+}
 
 <app-user-dialog [isVisible]="isvisible" (onCloseClickDialog)="handleToggleDialog()" [user]="user" />
 

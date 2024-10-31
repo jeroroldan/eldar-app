@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { Data } from '../../../pages/models/user.interface';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-card-user',
   standalone: true,
-  imports: [RouterLink, AsyncPipe, CardModule],
+  imports: [RouterLink, AsyncPipe, CardModule,ButtonModule],
   template: `
     <p-card
       [header]="user?.first_name"
